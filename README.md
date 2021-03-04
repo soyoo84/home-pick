@@ -1,6 +1,5 @@
-![자율주행사진](https://user-images.githubusercontent.com/78134019/109453737-2470fe00-7a96-11eb-95b6-9e6c3ad1b08c.jpg)
+https://user-images.githubusercontent.com/30484527/109915198-bd9d5000-7cf4-11eb-94c4-bf0101621a34.png
 
-https://github.com/soyoo84/home-pick/issues/1#issue-821764275
 
 # 서비스 시나리오
 
