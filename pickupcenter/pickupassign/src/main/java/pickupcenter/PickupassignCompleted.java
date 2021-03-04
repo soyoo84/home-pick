@@ -8,7 +8,6 @@ public class PickupassignCompleted extends AbstractEvent {
     private String workerid;
     private String worker;
     private String workertel;
-    
     private String tel;
     private String location;
     

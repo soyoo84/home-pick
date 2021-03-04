@@ -6,6 +6,10 @@ public class PickupassignCancelled extends AbstractEvent {
     private Long id;
     private String status; //호출,호출중,호출확정,호출취소
     private String workerid;
+	private String worker;
+	private String workertel;
+
+
     public String getStatus() {
 		return status;
 	}
@@ -38,8 +42,7 @@ public class PickupassignCancelled extends AbstractEvent {
 		this.workertel = workertel;
 	}
 
-	private String worker;
-    private String workertel;
+
 
     public Long getId() {
         return id;

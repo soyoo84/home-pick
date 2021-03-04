@@ -8,6 +8,14 @@ public class PickupmanageAssigned extends AbstractEvent {
     private String location;
     private String status; //호출,호출중,호출확정,호출취소
     private Integer cost;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
     
     public String getTel() {
 		return tel;
@@ -40,13 +48,5 @@ public class PickupmanageAssigned extends AbstractEvent {
 	public void setCost(Integer cost) {
 		this.cost = cost;
 	}
-
-	public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
 }

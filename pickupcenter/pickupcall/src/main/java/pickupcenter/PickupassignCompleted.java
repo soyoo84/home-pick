@@ -41,31 +41,5 @@ public class PickupassignCompleted extends AbstractEvent {
 		this.workertel = workertel;
 	}
 
-	private String 고객휴대폰번호;
-    private String 호출위치;
-    
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-	public String get고객휴대폰번호() {
-		return 고객휴대폰번호;
-	}
-
-	public void set고객휴대폰번호(String 고객휴대폰번호) {
-		this.고객휴대폰번호 = 고객휴대폰번호;
-	}
-
-	public String get호출위치() {
-		return 호출위치;
-	}
-
-	public void set호출위치(String 호출위치) {
-		this.호출위치 = 호출위치;
-	}
 
 }
