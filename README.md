@@ -434,6 +434,7 @@ kubectl apply -f service.yaml --namespace=skuser14ns
 ![부하](https://user-images.githubusercontent.com/30484527/110025611-efed9280-7d72-11eb-91aa-76859aa61f8e.png)
 
 - CB 잘 적용됨을 확인
+
 ![부하3](https://user-images.githubusercontent.com/30484527/110031687-91c4ad80-7d7a-11eb-8db1-6092a687f3b4.png)
 
 ### 오토스케일 아웃
@@ -461,18 +462,18 @@ kubectl get deploy pickupmanage -w -n skuser14ns
 - 어느정도 시간이 흐른 후 스케일 아웃이 벌어지는 것을 확인할 수 있다. max=10 
 - 부하를 줄이니 늘어난 스케일이 점점 줄어들었다.
 
-![오토4](https://user-images.githubusercontent.com/30484527/110036515-7bb9eb80-7d80-11eb-8f26-e669d2f83b3f.png)
+![오토4](https://user-images.githubusercontent.com/30484527/110039215-42837a80-7d84-11eb-96df-081e49093718.png)
 
 - 다시 부하를 주고 확인하니 Availability가 높아진 것을 확인 할 수 있었다.
-- 
+
+
 ## 무정지 재배포
 
 * 먼저 무정지 재배포가 100% 되는 것인지 확인하기 위해서 Autoscale 이나 CB 설정을 제거함
 
-
 - seige 로 배포작업 직전에 워크로드를 모니터링 함.
 ```
-kubectl apply -f kubernetes/deployment_readiness.yml
+kubectl apply -f pickupmanage/deployment.yml
 ```
 - readiness 옵션이 없는 경우 배포 중 서비스 요청처리 실패
 
@@ -481,7 +482,7 @@ kubectl apply -f kubernetes/deployment_readiness.yml
 
 - deployment.yml에 readiness 옵션을 추가 
 
-![image](https://user-images.githubusercontent.com/73699193/98107176-75ecf000-1edd-11eb-88df-617c870b49fb.png)
+![re](https://user-images.githubusercontent.com/30484527/110039614-d6554680-7d84-11eb-8bcf-ed9797e29451.png)
 
 - readiness적용된 deployment.yml 적용
 
@@ -490,18 +491,18 @@ kubectl apply -f kubernetes/deployment.yml
 ```
 - 새로운 버전의 이미지로 교체
 ```
-cd acr
-az acr build --registry admin02 --image admin02.azurecr.io/store:v4 .
-kubectl set image deploy store store=admin02.azurecr.io/store:v4 -n phone82
+az acr build --registry skuser14 --image skuser14.azurecr.io/pickupmanage:v3 .
+kubectl set image deploy pickupmanage pickupmanage=skuser14.azurecr.io/pickupmanage:v3 -n skuser14ns
 ```
+![re2](https://user-images.githubusercontent.com/30484527/110040487-41534d00-7d86-11eb-8ec1-a2a874cc75fb.png)
+
 - 기존 버전과 새 버전의 store pod 공존 중
 
-![image](https://user-images.githubusercontent.com/73699193/98106161-65884580-1edc-11eb-9540-17a3c9bdebf3.png)
+![re3](https://user-images.githubusercontent.com/30484527/110041112-2503e000-7d87-11eb-80af-9b40fdb30a6c.png)
 
-- Availability: 100.00 % 확인
-
-![image](https://user-images.githubusercontent.com/73699193/98106524-c152ce80-1edc-11eb-8e0f-3731ca2f709d.png)
-
+- 부하시 pod 증가
+ 
+![re4](https://user-images.githubusercontent.com/30484527/110041488-7ca24b80-7d87-11eb-8b2b-6cb46168be18.png)
 
 
 ## Config Map
