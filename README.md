@@ -429,6 +429,8 @@ kubectl apply -f service.yaml --namespace=skuser14ns
 ```
 - 부하 발생하여 CB가 발동하여 요청 실패처리하였고, 밀린 부하가 픽업호출에서 처리되면서 다시 받기 시작 
 
+![오토3](https://user-images.githubusercontent.com/30484527/110033745-23351f00-7d7d-11eb-81e9-5233a45ba4c0.png)
+
 ![부하](https://user-images.githubusercontent.com/30484527/110025611-efed9280-7d72-11eb-91aa-76859aa61f8e.png)
 
 - CB 잘 적용됨을 확인
@@ -459,14 +461,10 @@ kubectl get deploy pickupmanage -w -n skuser14ns
 - 어느정도 시간이 흐른 후 스케일 아웃이 벌어지는 것을 확인할 수 있다. max=10 
 - 부하를 줄이니 늘어난 스케일이 점점 줄어들었다.
 
-![image](https://user-images.githubusercontent.com/73699193/98102926-92862980-1ed7-11eb-8f19-a673d72da580.png)
-
-![오토3](https://user-images.githubusercontent.com/30484527/110033745-23351f00-7d7d-11eb-81e9-5233a45ba4c0.png)
-
-- 다시 부하를 주고 확인하니 Availability가 높아진 것을 확인 할 수 있었다.
-
 ![오토4](https://user-images.githubusercontent.com/30484527/110036515-7bb9eb80-7d80-11eb-8f26-e669d2f83b3f.png)
 
+- 다시 부하를 주고 확인하니 Availability가 높아진 것을 확인 할 수 있었다.
+- 
 ## 무정지 재배포
 
 * 먼저 무정지 재배포가 100% 되는 것인지 확인하기 위해서 Autoscale 이나 CB 설정을 제거함
