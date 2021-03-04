@@ -555,30 +555,11 @@ http POST http://app:8080/orders item=dfdf2 qty=22
 
 ## Self-healing (Liveness Probe)
 
-- store 서비스 정상 확인
-
-![image](https://user-images.githubusercontent.com/27958588/98096336-fb1cd880-1ece-11eb-9b99-3d704cd55fd2.jpg)
-
 
 - deployment.yml 에 Liveness Probe 옵션 추가
-```
-cd ~/phone82/store/kubernetes
-vi deployment.yml
+![li2](https://user-images.githubusercontent.com/30484527/110042408-14546980-7d89-11eb-846b-213d8687b0c7.png)
 
-(아래 설정 변경)
-livenessProbe:
-	tcpSocket:
-	  port: 8081
-	initialDelaySeconds: 5
-	periodSeconds: 5
-```
-![image](https://user-images.githubusercontent.com/27958588/98096375-0839c780-1ecf-11eb-85fb-00e8252aa84a.jpg)
+- 부하 적용시 pickupcall 서비스의 liveness가 발동되어 13번 retry 시도 한 부분 확인
 
-- store pod에 liveness가 적용된 부분 확인
-
-![image](https://user-images.githubusercontent.com/27958588/98096393-0a9c2180-1ecf-11eb-8ac5-f6048160961d.jpg)
-
-- store 서비스의 liveness가 발동되어 13번 retry 시도 한 부분 확인
-
-![image](https://user-images.githubusercontent.com/27958588/98096461-20a9e200-1ecf-11eb-8b02-364162baa355.jpg)
+![li3](https://user-images.githubusercontent.com/30484527/110042542-436adb00-7d89-11eb-8891-dc2369bf179a.png)
 
