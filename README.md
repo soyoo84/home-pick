@@ -166,27 +166,37 @@ Eventual Consistency 를 기본으로 채택함.
 각 서비스별로 bat 파일로 실행한다. 
 
 ```
-- run_taxicall.bat
+-setnv.bat
+SET JAVA_HOME=C:\dev\Tools\jdk1.8.0_131
+SET MVN_HOME=C:\dev\Tools\apache-maven-3.6.3
+SET KAFKA_HOME=C:\dev\Tools\kafka_2.13-2.7.0
+SET ANACONDA_HOME=C:\dev\Tools\Anaconda3
+SET MONGO_HOME=C:\dev\Tools\mongodb
+SET MARIA_HOME=C:\dev\Tools\mariadb-10.3.13-winx64
+SET MARIA_DATA=C:\dev\DATA\mariadb
+SET PATH=%MARIA_HOME%\BIN;%MONGO_HOME%\BIN;%NODE_HOME%;%NODE_HOME%\node_modules\npm;%NODE_HOME%\node_modules;%KAFKA_HOME%\BIN\WINDOWS;%JAVA_HOME%\BIN;%MVN_HOME%\BIN;%PATH%;
+
+- run_zookeeper
+zookeeper-server-start.bat %KAFKA_HOME%\config\zookeeper.properties 
+
+- run_kafka
+kafka-server-start.bat %KAFKA_HOME%\config\server.properties
+
+- run_pickupcall.bat
 call setenv.bat
-REM java  -Xmx400M -Djava.security.egd=file:/dev/./urandom -jar food-delivery\app\target\app-0.0.1-SNAPSHOT.jar --spring.profiles.active=docker
-REM java  -Xmx400M -Djava.security.egd=file:/dev/./urandom -jar food-delivery\app\target\app-0.0.1-SNAPSHOT.jar --spring.profiles.active=default
-cd ..\taxiguider\taxicall
+cd ..\pickupcenter\pickupcall
 mvn clean spring-boot:run
 pause ..
 
-- run_taximanage.bat
+- run_pickupmanage.bat
 call setenv.bat
-REM java  -Xmx400M -Djava.security.egd=file:/dev/./urandom -jar food-delivery\pay\target\pay-0.0.1-SNAPSHOT.jar --spring.profiles.active=docker
-REM java  -Xmx400M -Djava.security.egd=file:/dev/./urandom -jar food-delivery\pay\target\pay-0.0.1-SNAPSHOT.jar --spring.profiles.active=default
-cd ..\taxiguider\taximanage
+cd ..\pickupcenter\pickupmanage
 mvn clean spring-boot:run
 pause ..
 
-- run_taxiassign.bat
+- run_pickupassign.bat
 call setenv.bat
-REM java  -Xmx400M -Djava.security.egd=file:/dev/./urandom -jar food-delivery\store\target\store-0.0.1-SNAPSHOT.jar --spring.profiles.active=docker
-REM java  -Xmx400M -Djava.security.egd=file:/dev/./urandom -jar food-delivery\store\target\store-0.0.1-SNAPSHOT.jar --spring.profiles.active=default
-cd ..\taxiguider\taxiassign
+cd ..\pickupcenter\pickupassign
 mvn clean spring-boot:run
 pause ..
 
@@ -194,7 +204,7 @@ pause ..
 call setenv.bat
 SET CONDA_PATH=%ANACONDA_HOME%;%ANACONDA_HOME%\BIN;%ANACONDA_HOME%\condabin;%ANACONDA_HOME%\Library\bin;%ANACONDA_HOME%\Scripts;
 SET PATH=%CONDA_PATH%;%PATH%;
-cd ..\taxiguider_py\customer\
+cd ..\pickupcenter\customer_py\
 python policy-handler.py 
 pause ..
 
