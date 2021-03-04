@@ -465,8 +465,7 @@ kubectl get deploy pickupmanage -w -n skuser14ns
 
 - 다시 부하를 주고 확인하니 Availability가 높아진 것을 확인 할 수 있었다.
 
-![image](https://user-images.githubusercontent.com/73699193/98103249-14765280-1ed8-11eb-8c7c-9ea1c67e03cf.png)
-
+![오토4](https://user-images.githubusercontent.com/30484527/110036515-7bb9eb80-7d80-11eb-8f26-e669d2f83b3f.png)
 
 ## 무정지 재배포
 
