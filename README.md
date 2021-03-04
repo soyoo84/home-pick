@@ -278,16 +278,15 @@ http localhost:8081/pickupmanages/
 
 서비스에 대한 하나의 접점을 만들기 위한 게이트웨이의 설정은 8088로 설정 하였으며, 다음 마이크로서비스에 대한 설정 입니다.
 ```
-택시호출 서비스 : 8081
-택시관리 서비스 : 8082
-택시호출 서비스 : 8083
+픽업호출 서비스 : 8081
+픽업관리 서비스 : 8082
+픽업할당 서비스 : 8084
 ```
 
 gateway > applitcation.yml 설정
 
-![gateway_1](https://user-images.githubusercontent.com/78134019/109480363-c73d7280-7abe-11eb-9904-0c18e79072eb.png)
-
-![gateway_2](https://user-images.githubusercontent.com/78134019/109480386-d02e4400-7abe-11eb-9251-a813ac911e0d.png)
+![gateway_1](https://user-images.githubusercontent.com/30484527/110018221-6afe7b00-7d6a-11eb-9d66-2b80a5543447.png)
+![gateway_2](https://user-images.githubusercontent.com/30484527/110018225-6c2fa800-7d6a-11eb-9a97-722dac8a342e.png)
 
 
 gateway 테스트
@@ -296,125 +295,30 @@ gateway 테스트
 http localhost:8080/택시호출s
 -> gateway 를 호출하나 8081 로 호출됨
 ```
-![gateway_3](https://user-images.githubusercontent.com/78134019/109480424-da504280-7abe-11eb-988e-2a6d7a1f7cea.png)
-
+![gateway_3](https://user-images.githubusercontent.com/30484527/110018454-a5681800-7d6a-11eb-87f2-c318ad5c91ea.png)
 
 
 ## 동기식 호출 과 Fallback 처리
 
-호출(taxicall)->택시관리(taximanage) 간의 호출은 동기식 일관성을 유지하는 트랜잭션으로 처리함.
+호출(pickupcall)->택시관리(pickupmanage) 간의 호출은 동기식 일관성을 유지하는 트랜잭션으로 처리함.
 호출 프로토콜은 이미 앞서 Rest Repository 에 의해 노출되어있는 REST 서비스를 FeignClient 를 이용하여 호출하도록 한다. 
 
+![동기1](https://user-images.githubusercontent.com/30484527/110020893-71dabd00-7d6d-11eb-8486-ea439dd311fd.png)
 
-```
-# external > 택시관리Service.java
+- 픽업호출 --> 픽업관리가 호출
 
+![동기2](https://user-images.githubusercontent.com/30484527/110020899-730bea00-7d6d-11eb-9ae0-f9550a1546bd.png)
 
-package taxiguider.external;
+- 동기식 호출 적용으로 픽업관리 시스템이 비정상 경우  픽업도 호출될 수 없음을 확인 
 
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
-//@FeignClient(name="taximanage", url="http://localhost:8082")
-@FeignClient(name="taximanage", url="http://localhost:8082", fallback = 택시관리ServiceFallback.class)
-public interface 택시관리Service {
-
-    @RequestMapping(method= RequestMethod.POST, path="/택시관리s")
-    public void 택시할당요청(@RequestBody 택시관리 택시관리);
-
-}
-
-```
-
-```
-# external > 택시관리ServiceFallback.java
+![동기3](https://user-images.githubusercontent.com/30484527/110020902-73a48080-7d6d-11eb-8040-db79c526f062.png)
 
 
-package taxiguider.external;
-
-import org.springframework.stereotype.Component;
-
-@Component
-public class 택시관리ServiceFallback implements 택시관리Service {
-	 
-	//@Override
-	//public void 택시할당요청(택시관리 택시관리) 
-	//{	
-	//	System.out.println("Circuit breaker has been opened. Fallback returned instead.");
-	//}
-	
-	
-	@Override
-	public void 택시할당요청(택시관리 택시관리) {
-		// TODO Auto-generated method stub
-		System.out.println("Circuit breaker has been opened. Fallback returned instead. " + 택시관리.getId());
-	}
-
-}
-
-```
-
-![동기식](https://user-images.githubusercontent.com/78134019/109463569-97837000-7aa8-11eb-83c4-6f6eff1594aa.jpg)
-
-
-- 택시호출을 하면 택시관리가 호출되도록..
-```
-# 택시호출.java
-
- @PostPersist
-    public void onPostPersist(){    	
-    	System.out.println("휴대폰번호 " + get휴대폰번호());
-        System.out.println("호출위치 " + get호출위치());
-        System.out.println("호출상태 " + get호출상태());
-        System.out.println("예상요금 " + get예상요금());
-        //Following code causes dependency to external APIs
-        // it is NOT A GOOD PRACTICE. instead, Event-Policy mapping is recommended.   	
-    	if(get휴대폰번호() != null)
-		{
-    		System.out.println("SEND###############################" + getId());
-			택시관리 택시관리 = new 택시관리();
-	        
-			택시관리.setOrderId(String.valueOf(getId()));
-	        택시관리.set고객휴대폰번호(get휴대폰번호());
-	        if(get호출위치()!=null) 
-	        	택시관리.set호출위치(get호출위치());
-	        if(get호출상태()!=null) 
-	        	택시관리.set호출상태(get호출상태());
-	        if(get예상요금()!=null) 
-	        	택시관리.set예상요금(get예상요금());
-	        
-	        // mappings goes here
-	        TaxicallApplication.applicationContext.getBean(택시관리Service.class).택시할당요청(택시관리);
-		}
-```
-
-![동기식2](https://user-images.githubusercontent.com/78134019/109463985-47f17400-7aa9-11eb-8603-c1f83e17951d.jpg)
-
-- 동기식 호출 적용으로 택시 관리 시스템이 정상적이지 않으면 , 택시콜도 접수될 수 없음을 확인 
-```
-# 택시 관리 시스템 down 후 taxicall 호출 
-
-#taxicall
-
-C:\Users\Administrator>http localhost:8081/택시호출s 휴대폰번호="01012345678" 호출상태="호출"
-```
-
-![택시관리죽으면택시콜놉](https://user-images.githubusercontent.com/78134019/109464780-905d6180-7aaa-11eb-9c90-e7d1326deea1.jpg)
-
-```
-# 택시 관리 (taximanage) 재기동 후 주문하기
-
-#주문하기(order)
-http localhost:8081/택시호출s 휴대폰번호="01012345678" 호출상태="호출"
-```
-
-![택시관리재시작](https://user-images.githubusercontent.com/78134019/109464984-e5997300-7aaa-11eb-9363-b7bfe15de105.jpg)
+![동기4](https://user-images.githubusercontent.com/30484527/110020906-743d1700-7d6d-11eb-8267-93a5d820f338.png)
 
 -fallback 
 
-![fallback캡쳐](https://user-images.githubusercontent.com/78134019/109480299-b5f46600-7abe-11eb-906e-9e1e6da245b2.png)
+![풀백](https://user-images.githubusercontent.com/30484527/110021112-af3f4a80-7d6d-11eb-8b80-2ecc919b04e0.png)
 
 
 ## 비동기식 호출 / 장애격리  / 성능
