@@ -240,49 +240,38 @@ pause ..
 두 개의 호출 상태
 를 만듬.
 ```
-http localhost:8081/pickupcalls 휴대폰번호="01050958718" status=호출 location="이수" cost=10000
-http localhost:8081/pickupcalls 휴대폰번호="01089385708" status=호출 location="사당" cost=20000
+http localhost:8081/pickupcalls/ tel="01050958718" location="이수" status="호출" cost="20000"
+http localhost:8081/pickupcalls/ tel="01089385708" location="사당" status="호출" cost="30000"
 ```
-![image](screenshots/taxicall1.png "taxicall 서비스 호출")
-![image](screenshots/taxicall2.png "taxicall 서비스 호출")
 
-호출 결과는 모두 택시 할당(taxiassign)에서 택시기사의 할당으로 처리되어 호출 확정 상태가 되어 있음.
-
-![image](screenshots/taxicall_result1.png "taxicall 서비스 호출 결과")
-![image](screenshots/taxicall_result2.png "taxicall 서비스 호출 결과")
-![image](screenshots/taximanage_result1.png "taxicall 서비스 호출 결과 - 택시관리")
+![화면 캡처 2021-03-05 015808](https://user-images.githubusercontent.com/30484527/110001758-0df9c980-7d58-11eb-9ef2-307bcfa676a4.jpg)
 
 
-- taxicall 서비스 호출 취소 처리
+호출 결과는 모두 픽업할당(pickupassign)에서 택배기사의 할당으로 처리되어 호출 확정 상태가 되어 있음.
 
-호출 취소는 택시호출에서 다음과 같이 호출 하나를 취소 함으로써 진행 함.
+![화면 캡처 2021-03-05 020134](https://user-images.githubusercontent.com/30484527/110001767-118d5080-7d58-11eb-8c84-efa945c386ab.jpg)
 
-```
-http delete http://localhost:8081/택시호출s/1
-HTTP/1.1 204
-Date: Tue, 02 Mar 2021 16:59:12 GMT
-```
-호출이 취소 되면 택시 호출이 하나가 삭제 되었고, 
+- pickupcall 서비스 호출 취소 처리
+
+호출 취소는 픽업호출에서 다음과 같이 호출 하나를 취소 함으로써 진행 함.
+
+![화면 캡처 2021-03-05 020605](https://user-images.githubusercontent.com/30484527/110001771-118d5080-7d58-11eb-8204-e8becbf6b0ca.jpg)
 
 ```
-http localhost:8081/택시호출s/
+http delete http://localhost:8081/pickupcalls/1
 ```
-![image](screenshots/taxicancel_result.png "taxicall 서비스 호출취소 결과")
-
-
-택시관리에서는 해당 호출에 대해서 호출취소로 상태가 변경 됨.
+호출이 취소 되면 픽업호출이 하나가 삭제 되었고, 택시관리에서는 해당 호출에 대해서 호출취소로 상태가 변경 됨.
+![화면 캡처 2021-03-05 020638](https://user-images.githubusercontent.com/30484527/110001775-1225e700-7d58-11eb-8497-77d9dc54c23b.jpg)
 
 ```
-http localhost:8082/택시관리s/
+http localhost:8081/pickupmanages/
 ```
-![image](screenshots/taximanage_result.png "taxicall 서비스 호출취소 결과")
 
 - 고객 메시지 서비스 처리
 고객(customer)는 호출 확정과 할당 확정에 대한 메시지를 다음과 같이 받을 수 있으며,
 할당 된 택시기사의 정보를 또한 확인 할 수 있다.
 파이썬으로 구현 하였음.
 
-![image](screenshots/customer.png "호출 결과에 대한 고객 메시지")
 
 
 ## Gateway 적용
