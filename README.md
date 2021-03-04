@@ -509,54 +509,15 @@ kubectl set image deploy pickupmanage pickupmanage=skuser14.azurecr.io/pickupman
 
 - apllication.yml 설정
 
-* default쪽
-
-![image](https://user-images.githubusercontent.com/73699193/98108335-1c85c080-1edf-11eb-9d0f-1f69e592bb1d.png)
-
-* docker 쪽
-
-![image](https://user-images.githubusercontent.com/73699193/98108645-ad5c9c00-1edf-11eb-8d54-487d2262e8af.png)
-
-- Deployment.yml 설정
-
-![image](https://user-images.githubusercontent.com/73699193/98108902-12b08d00-1ee0-11eb-8f8a-3a3ea82a635c.png)
-
-- config map 생성 후 조회
-```
-kubectl create configmap apiurl --from-literal=url=http://pay:8080 --from-literal=fluentd-server-ip=10.xxx.xxx.xxx -n phone82
-```
-![image](https://user-images.githubusercontent.com/73699193/98107784-5bffdd00-1ede-11eb-8da6-82dbead0d64f.png)
-
-- 설정한 url로 주문 호출
-```
-http POST http://app:8080/orders item=dfdf1 qty=21
-```
-
-![image](https://user-images.githubusercontent.com/73699193/98109319-b732cf00-1ee0-11eb-9e92-ad0e26e398ec.png)
-
-- configmap 삭제 후 app 서비스 재시작
-```
-kubectl delete configmap apiurl -n phone82
-kubectl get pod/app-56f677d458-5gqf2 -n phone82 -o yaml | kubectl replace --force -f-
-```
-![image](https://user-images.githubusercontent.com/73699193/98110005-cf571e00-1ee1-11eb-973f-2f4922f8833c.png)
-
-- configmap 삭제된 상태에서 주문 호출   
-```
-http POST http://app:8080/orders item=dfdf2 qty=22
-```
-![image](https://user-images.githubusercontent.com/73699193/98110323-42f92b00-1ee2-11eb-90f3-fe8044085e9d.png)
-
-![image](https://user-images.githubusercontent.com/73699193/98110445-720f9c80-1ee2-11eb-851e-adcd1f2f7851.png)
-
-![image](https://user-images.githubusercontent.com/73699193/98110782-f4985c00-1ee2-11eb-97a7-1fed3c6b042c.png)
-
+![c1](https://user-images.githubusercontent.com/30484527/110045226-b5ddba00-7d8d-11eb-811c-a6c1c3ba9bfa.png)
+![c2](https://user-images.githubusercontent.com/30484527/110045239-ba09d780-7d8d-11eb-8e40-8ad7893a2cc4.png)
 
 
 ## Self-healing (Liveness Probe)
 
 
 - deployment.yml 에 Liveness Probe 옵션 추가
+
 ![li2](https://user-images.githubusercontent.com/30484527/110042408-14546980-7d89-11eb-846b-213d8687b0c7.png)
 
 - 부하 적용시 pickupcall 서비스의 liveness가 발동되어 13번 retry 시도 한 부분 확인
