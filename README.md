@@ -436,27 +436,21 @@ kubectl apply -f service.yaml --namespace=skuser14ns
 
 ### 오토스케일 아웃
 
-- 정은 CPU 사용량이 15프로를 넘어서면 replica 를 10개까지 늘려준다:
-
 ```
 # autocale out 설정
 pickupmanage > deployment.yml 설정
 ```
-![오토](https://user-images.githubusercontent.com/30484527/110032085-18798a80-7d7b-11eb-9b0a-708959d35c8c.png)
+![오토2](https://user-images.githubusercontent.com/30484527/110032085-18798a80-7d7b-11eb-9b0a-708959d35c8c.png)
 
 ```
-kubectl autoscale deploy store --min=1 --max=10 --cpu-percent=15 -n phone82
+kubectl autoscale deploy store --min=1 --max=10 --cpu-percent=15 -n skuser14ns
 ```
-![image](https://user-images.githubusercontent.com/73699193/98100149-ce1ef480-1ed3-11eb-908e-a75b669d611d.png)
+![오토2](https://user-images.githubusercontent.com/30484527/110033149-5aef9700-7d7c-11eb-9b2b-2f68184e5b05.png)
 
 
--
 - CB 에서 했던 방식대로 워크로드를 2분 동안 걸어준다.
-```
-kubectl exec -it pod/siege-5c7c46b788-4rn4r -c siege -n phone82 -- /bin/bash
-siege -c100 -t120S -r10 -v --content-type "application/json" 'http://store:8080/storeManages POST {"orderId":"456", "process":"Payed"}'
-```
-![image](https://user-images.githubusercontent.com/73699193/98102543-0d9b1000-1ed7-11eb-9cb6-91d7996fc1fd.png)
+
+![image](https://user-images.githubusercontent.com/30484527/110030753-73aa7d80-7d79-11eb-8b76-5438f09d1c3e.png)
 
 - 오토스케일이 어떻게 되고 있는지 모니터링을 걸어둔다:
 ```
