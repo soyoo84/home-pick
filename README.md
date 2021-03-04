@@ -211,7 +211,7 @@ pause ..
 ```
 
 ## DDD 의 적용
-총 3개의 Domain 으로 관리되고 있으며, 택시요청(Taxicall) , 택시관리(TaxiManage), 택시할당(TaxiAssign) 으로 구성된다. 
+총 3개의 Domain 으로 관리되고 있으며, 픽업요청(pickupcall) , 픽업관리(pickupManage), 픽업할당(pickupAssign) 으로 구성된다. 
 
 
 ![DDD](https://user-images.githubusercontent.com/30484527/109992823-fec24e00-7d4e-11eb-98a1-48a08a886871.png)
@@ -235,16 +235,14 @@ pause ..
 
 ## 마이크로 서비스 호출 흐름
 
-- taxicall 서비스 호출처리
-호출(taxicall)->택시관리(taximanage) 간의 호출처리 됨.
-택시 할당에서 택시기사를 할당하여 호출 확정 상태가 됨.
+- pickupcall 서비스 호출처리
+픽업호출(pickupcall)->픽업관리(pickupmanage) 간의 호출처리 되고, 픽업할당에서 택배기사를 할당하여 호출확정 상태가 됨.
 두 개의 호출 상태
 를 만듬.
 ```
-http localhost:8081/택시호출s 휴대폰번호="01012345678" 호출상태=호출 호출위치="마포" 예상요금=25000
-http localhost:8081/택시호출s 휴대폰번호="01056789012" 호출상태=호출 호출위치="서대문구" 예상요금=30000
+http localhost:8081/pickupcalls 휴대폰번호="01050958718" status=호출 location="이수" cost=10000
+http localhost:8081/pickupcalls 휴대폰번호="01089385708" status=호출 location="사당" cost=20000
 ```
-
 ![image](screenshots/taxicall1.png "taxicall 서비스 호출")
 ![image](screenshots/taxicall2.png "taxicall 서비스 호출")
 
