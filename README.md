@@ -321,7 +321,7 @@ http localhost:8080/택시호출s
 ![풀백](https://user-images.githubusercontent.com/30484527/110021112-af3f4a80-7d6d-11eb-8b80-2ecc919b04e0.png)
 
 
-## 비동기식 호출 / 장애격리  / 성능
+## 비동기식 호출 / 시간적 디커플링 / 장애격리
 
 픽업관리 (pickupmanage) 이후 픽업할당(pickupassign) 은 비동기식 처리이므로 , 픽업호출(pickupcall) 의 서비스 호출에는 영향이 없다
  
@@ -331,184 +331,118 @@ http localhost:8080/택시호출s
 ![비동기1](https://user-images.githubusercontent.com/30484527/110021617-51f7c900-7d6e-11eb-9746-b646d5ed9bcb.png)
 
 
-## 성능 조회 / View 조회
-고객이 호출한 모든 정보는 조회가 가능하다. 
-
-![고객View](https://user-images.githubusercontent.com/78134019/109483385-80ea1280-7ac2-11eb-9419-bf3ff5a0dbbc.png)
-
-
----mvn MSA Service
-<gateway>
-	
-![mvn_gateway](https://user-images.githubusercontent.com/78134019/109744124-244b3c80-7c15-11eb-80a9-bed42413aa58.png)
-	
-<taxicall>
-	
-![mvn_taxicall](https://user-images.githubusercontent.com/78134019/109744165-31682b80-7c15-11eb-9d94-7bc23efca6b6.png)
-
-<taximanage>
-	
-![mvn_taximanage](https://user-images.githubusercontent.com/78134019/109744195-3b8a2a00-7c15-11eb-9554-1c3ba088af52.png)
-
-<taxiassign>
-	
-![mvn_taxiassign](https://user-images.githubusercontent.com/78134019/109744226-46dd5580-7c15-11eb-8b47-5100ed01e3ae.png)
-
-
 # 운영
 
-## Deploy / Pipeline
+- 네임스페이스
+```
+kubectl create ns skuser14ns
+kubectl config set-context skuser14-aks --namespace=skuser14ns
+kubectl get ns
 
-- az login
 ```
-{
-    "cloudName": "AzureCloud",
-    "homeTenantId": "6011e3f8-2818-42ea-9a63-66e6acc13e33",
-    "id": "718b6bd0-fb75-4ec9-9f6e-08ae501f92ca",
-    "isDefault": true,
-    "managedByTenants": [],
-    "name": "2",
-    "state": "Enabled",
-    "tenantId": "6011e3f8-2818-42ea-9a63-66e6acc13e33",
-    "user": {
-      "name": "skTeam03@gkn2021hotmail.onmicrosoft.com",
-      "type": "user"
-    }
-  }
-```
-
-
-- account set 
-```
-az account set --subscription "종량제2"
-```
-
-
-- 리소스그룹생성
-```
-그룹명 : skccteam03-rsrcgrp
-```
-
-
-- 클러스터 생성
-```
-클러스터 명 : skccteam03-aks
-```
-
-- 토큰 가져오기
-```
-az aks get-credentials --resource-group skccteam03-rsrcgrp --name skccteam03-aks
-```
-
-- aks에 acr 붙이기
-```
-az aks update -n skccteam03-aks -g skccteam03-rsrcgrp --attach-acr skccteam03
-```
-
-![aks붙이기](https://user-images.githubusercontent.com/78134019/109653395-540e2c00-7ba4-11eb-97dd-2dcfdf5dc539.jpg)
-
+![운영1](https://user-images.githubusercontent.com/30484527/110022973-ed3d6e00-7d6f-11eb-8013-bd8d7b6ec59b.png)
 
 
 -deployment.yml을 사용하여 배포 
---> 도커 이미지 만들기 붙이기 
-- deployment.yml 편집
 ```
-namespace, image 설정
-env 설정 (config Map) 
-readiness 설정 (무정지 배포)
-liveness 설정 (self-healing)
-resource 설정 (autoscaling)
+cd gateway
+mvn clean && mvn package
+cd ..
+cd pickupcall
+mvn clean && mvn package
+cd ..
+cd pickupmanage
+mvn clean && mvn package
+cd ..
+cd pickupassign
+mvn clean && mvn package
+
+cd ..
+cd gateway
+az acr build --registry skuser14 --image skuser14.azurecr.io/gateway:v1 .
+//az acr build --registry skuser14 --image skuser14.azurecr.io/gateway:v2 .
+cd ..
+cd pickupcall
+az acr build --registry skuser14 --image skuser14.azurecr.io/pickupcall:v1 .
+az acr build --registry skuser14 --image skuser14.azurecr.io/pickupcall:v2 .
+cd ..
+cd pickupmanage
+az acr build --registry skuser14 --image skuser14.azurecr.io/pickupmanage:v1 .
+cd ..
+cd pickupassign
+az acr build --registry skuser14 --image skuser14.azurecr.io/pickupassign:v1 .
+cd ..
+cd customer
+az acr build --registry skuser14 --image skuser14.azurecr.io/customer-policy-handler:v1 .
+
+
+cd gateway/kubernetes
+kubectl apply -f deployment.yml --namespace=skuser14ns
+kubectl apply -f service.yaml --namespace=skuser14ns
+
+cd ../../
+cd pickupcall/kubernetes
+kubectl apply -f deployment.yml,service.yaml --namespace=skuser14ns
+kubectl apply -f service.yaml --namespace=skuser14ns
+
+cd ../../
+cd pickupmanage/kubernetes
+kubectl apply -f deployment.yml,service.yaml --namespace=skuser14ns
+kubectl apply -f service.yaml --namespace=skuser14ns
+
+cd ../../
+cd pickupassign/kubernetes
+kubectl apply -f deployment.yml,service.yaml --namespace=skuser14ns
+kubectl apply -f service.yaml --namespace=skuser14ns
+
+cd ../../
+cd customer/kubernetes
+kubectl apply -f deployment.yml,service.yaml --namespace=skuser14ns
+kubectl apply -f service.yaml --namespace=skuser14ns
+
 ```
-![deployment_yml](https://user-images.githubusercontent.com/78134019/109652001-9171ba00-7ba2-11eb-8c29-7128ceb4ec97.jpg)
+![운영2](https://user-images.githubusercontent.com/30484527/110023953-1c081400-7d71-11eb-9113-bd50d0f5be72.png)
 
-- deployment.yml로 서비스 배포
-```
-cd app
-kubectl apply -f kubernetes/deployment.yml
-```
-<Deploy cutomer>
-![deploy_customer](https://user-images.githubusercontent.com/78134019/109744443-a471a200-7c15-11eb-94c9-a0c0a7999d04.png)
-
-<Deploy gateway>
-![deploy_gateway](https://user-images.githubusercontent.com/78134019/109744457-acc9dd00-7c15-11eb-8502-ff65e779e9d2.png)
-
-<Deploy taxiassign>
-![deploy_taxiassign](https://user-images.githubusercontent.com/78134019/109744471-b3585480-7c15-11eb-8d68-bba9c3d8ce01.png)
-
-<Deploy taxicall>
-![deploy_taxicall](https://user-images.githubusercontent.com/78134019/109744487-bb17f900-7c15-11eb-8bd0-ff0a9fc9b2e3.png)
-
-<Deploy_taximanage>
-![deploy_taximanage](https://user-images.githubusercontent.com/78134019/109744591-e69ae380-7c15-11eb-834a-44befae55092.png)
 
 ## 동기식 호출 / 서킷 브레이킹 / 장애격리
 
 * 서킷 브레이킹 프레임워크의 선택: Spring FeignClient + Hystrix 옵션을 사용하여 구현함
 
-시나리오는 단말앱(app)-->결제(pay) 시의 연결을 RESTful Request/Response 로 연동하여 구현이 되어있고, 결제 요청이 과도할 경우 CB 를 통하여 장애격리.
-
-- Hystrix 를 설정:  요청처리 쓰레드에서 처리시간이 610 밀리가 넘어서기 시작하여 어느정도 유지되면 CB 회로가 닫히도록 (요청을 빠르게 실패처리, 차단) 설정
-```
-# application.yml
-feign:
-  hystrix:
-    enabled: true
-
-# To set thread isolation to SEMAPHORE
-#hystrix:
-#  command:
-#    default:
-#      execution:
-#        isolation:
-#          strategy: SEMAPHORE
-
-hystrix:
-  command:
-    # 전역설정
-    default:
-      execution.isolation.thread.timeoutInMilliseconds: 610
-
-```
-![hystrix](https://user-images.githubusercontent.com/78134019/109652345-0218d680-7ba3-11eb-847b-708ba071c119.jpg)
+- Hystrix 를 설정:  
+- 요청처리 쓰레드에서 처리시간이 610 밀리가 넘어서기 시작하여 어느정도 유지되면 CB 회로가 닫히도록 (요청을 빠르게 실패처리, 차단) 설정
 
 
+![전역설정](https://user-images.githubusercontent.com/30484527/110024615-b0727680-7d71-11eb-9ed2-33f5908c7f21.png)
+
+
+부하테스트
 -----------------------------------------
 * siege 툴 사용법:
 ```
  siege가 생성되어 있지 않으면:
- kubectl run siege --image=apexacme/siege-nginx -n phone82
+ kubectl run siege --image=apexacme/siege-nginx -n skuser14
  siege 들어가기:
- kubectl exec -it pod/siege-5c7c46b788-4rn4r -c siege -n phone82 -- /bin/bash
- siege 종료:
- Ctrl + C -> exit
+ kubectl exec -it pod/siege-5459b87f86-ht7ng -c siege -n skuser14ns -- /bin/bash
+ 동시사용자 100명, 60초 동안 실시
+ siege -c100 -t60S -r10 -v --content-type "application/json" 'http://pickupcall:8080/pickupcalls POST {"tel": "01050958718"}'
+ siege 종료: Ctrl + C -> exit
 ```
-* 부하테스터 siege 툴을 통한 서킷 브레이커 동작 확인:
-- 동시사용자 100명
-- 60초 동안 실시
+- 부하 발생하여 CB가 발동하여 요청 실패처리하였고, 밀린 부하가 픽업호출에서 처리되면서 다시 받기 시작 
 
-```
-siege -c100 -t60S -r10 -v --content-type "application/json" 'http://app:8080/orders POST {"item": "abc123", "qty":3}'
-```
-- 부하 발생하여 CB가 발동하여 요청 실패처리하였고, 밀린 부하가 pay에서 처리되면서 다시 order를 받기 시작 
-
-![image](https://user-images.githubusercontent.com/73699193/98098702-07eefb80-1ed2-11eb-94bf-316df4bf682b.png)
-
-- report
-
-![image](https://user-images.githubusercontent.com/73699193/98099047-6e741980-1ed2-11eb-9c55-6fe603e52f8b.png)
+![부하](https://user-images.githubusercontent.com/30484527/110025611-efed9280-7d72-11eb-91aa-76859aa61f8e.png)
 
 - CB 잘 적용됨을 확인
-
+![부하3](https://user-images.githubusercontent.com/30484527/110031687-91c4ad80-7d7a-11eb-8db1-6092a687f3b4.png)
 
 ### 오토스케일 아웃
 
-- 대리점 시스템에 대한 replica 를 동적으로 늘려주도록 HPA 를 설정한다. 설정은 CPU 사용량이 15프로를 넘어서면 replica 를 10개까지 늘려준다:
+- 정은 CPU 사용량이 15프로를 넘어서면 replica 를 10개까지 늘려준다:
 
 ```
 # autocale out 설정
-store > deployment.yml 설정
+pickupmanage > deployment.yml 설정
 ```
-![image](https://user-images.githubusercontent.com/73699193/98187434-44fbd200-1f54-11eb-9859-daf26f812788.png)
+![오토](https://user-images.githubusercontent.com/30484527/110032085-18798a80-7d7b-11eb-9b0a-708959d35c8c.png)
 
 ```
 kubectl autoscale deploy store --min=1 --max=10 --cpu-percent=15 -n phone82
