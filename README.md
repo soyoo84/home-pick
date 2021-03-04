@@ -214,27 +214,23 @@ pause ..
 총 3개의 Domain 으로 관리되고 있으며, 택시요청(Taxicall) , 택시관리(TaxiManage), 택시할당(TaxiAssign) 으로 구성된다. 
 
 
-![DDD](https://user-images.githubusercontent.com/78134019/109460756-74ef5800-7aa4-11eb-8140-ec3ebb47a63f.jpg)
-
-
-![DDD_2](https://user-images.githubusercontent.com/78134019/109460847-9ea87f00-7aa4-11eb-8fe4-94dd57009cd4.jpg)
-
+![DDD](https://user-images.githubusercontent.com/30484527/109992823-fec24e00-7d4e-11eb-98a1-48a08a886871.png)
 
 
 ## 폴리글랏 퍼시스턴스
 
 ```
-위치 : /taxiguider>taximanage>pom.xml
+위치 : /pickupcenter>pickupmanage>pom.xml
 ```
-![폴리그랏DB_최종](https://user-images.githubusercontent.com/78134019/109745194-d800fc00-7c16-11eb-87bd-2f65884a5f71.jpg)
+![폴리그랏](https://user-images.githubusercontent.com/30484527/109993612-d555f200-7d4f-11eb-97a3-83ab4255cad4.png)
 
 
 
 ## 폴리글랏 프로그래밍 - 파이썬
 ```
-위치 : /taxiguider_py>cutomer>policy-handler.py
+위치 : /pickupcenter>cutomer>policy-handler.py
 ```
-![폴리그랏프로그래밍](https://user-images.githubusercontent.com/78134019/109745241-ebac6280-7c16-11eb-8839-6c974340839b.jpg)
+![폴리그랏2](https://user-images.githubusercontent.com/30484527/109993997-38e01f80-7d50-11eb-9ae0-bfaf76854864.png)
 
 
 ## 마이크로 서비스 호출 흐름
