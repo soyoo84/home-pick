@@ -507,10 +507,20 @@ kubectl set image deploy pickupmanage pickupmanage=skuser14.azurecr.io/pickupman
 
 ## Config Map
 
-- apllication.yml 설정
+- Deployment.yml 설정 및 코드작성
 
 ![c1](https://user-images.githubusercontent.com/30484527/110045226-b5ddba00-7d8d-11eb-811c-a6c1c3ba9bfa.png)
+
 ![c2](https://user-images.githubusercontent.com/30484527/110045239-ba09d780-7d8d-11eb-8e40-8ad7893a2cc4.png)
+
+- config map 생성 후 조회
+```
+kubectl create configmap delay-conf --from-literal=sleeptime=20
+```
+
+![c3](https://user-images.githubusercontent.com/30484527/110047151-b4fa5780-7d90-11eb-9990-3486b0881404.png)
+![c4](https://user-images.githubusercontent.com/30484527/110047157-b6c41b00-7d90-11eb-8e5e-35b9b8a60e82.png)
+![c5](https://user-images.githubusercontent.com/30484527/110047160-b75cb180-7d90-11eb-9ec2-9a6ba219a28a.png)
 
 
 ## Self-healing (Liveness Probe)
