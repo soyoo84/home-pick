@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 //@FeignClient(name="taximanage", url="http://localhost:8082")
 //@FeignClient(name="pickmanage", url="http://pickmanage:8080", fallback = PickupmanageServiceFallback.class)
-@FeignClient(name="pickmanage", url="http://localhost:8082", fallback = PickupmanageServiceFallback.class)
+@FeignClient(name="pickupmanage", url="http://localhost:8082", fallback = PickupmanageServiceFallback.class)
 public interface PickupmanageService {
 
-    @RequestMapping(method= RequestMethod.POST, path="/pickmanages")
+    @RequestMapping(method= RequestMethod.POST, path="/pickupmanages")
     public void reqPickupAssign(@RequestBody Pickupmanage pickupmanage);
 
 }

@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: taxicall
+  name: pickupcall
   labels:
-    app: taxicall
+    app: pickupcall
 spec:
   ports:
     - port: 8080
       targetPort: 8080
   selector:
-    app: taxicall
+    app: pickupcall

@@ -8,18 +8,6 @@ public class PickupassignCompleted extends AbstractEvent {
     private String workerid;
     private String worker;
     private String workertel;
-
-	private String tel;
-	private String location;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
     public String getStatus() {
 		return status;
 	}
@@ -67,6 +55,15 @@ public class PickupassignCompleted extends AbstractEvent {
 	public void setLocation(String location) {
 		this.location = location;
 	}
-    
 
+	private String tel;
+    private String location;
+    
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

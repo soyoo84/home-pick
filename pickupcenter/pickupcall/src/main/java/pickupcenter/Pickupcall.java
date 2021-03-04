@@ -28,6 +28,10 @@ public class Pickupcall {
 	
     @PostPersist
     public void onPostPersist(){
+//        택시호출요청됨 택시호출요청됨 = new 택시호출요청됨();
+//        BeanUtils.copyProperties(this, 택시호출요청됨);
+//        택시호출요청됨.publishAfterCommit();
+    	
     	System.out.println("휴대폰번호 " + getTel());
         System.out.println("호출위치 " + getLocation());
         System.out.println("호출상태 " + getStatus());
@@ -53,25 +57,6 @@ public class Pickupcall {
 		}
 
     }
-
-	@PreRemove
-	public void onPreRemove(){
-		PickupcallCancelled 호출취소됨 = new PickupcallCancelled();
-		BeanUtils.copyProperties(this, 호출취소됨);
-		호출취소됨.publishAfterCommit();
-
-		//Following code causes dependency to external APIs
-		// it is NOT A GOOD PRACTICE. instead, Event-Policy mapping is recommended.
-
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getTel() {
 		return tel;
@@ -104,5 +89,23 @@ public class Pickupcall {
 	public void setCost(Integer cost) {
 		this.cost = cost;
 	}
+
+	@PreRemove
+	public void onPreRemove(){
+		PickupcallCancelled pickupcallCancelled = new PickupcallCancelled();
+		BeanUtils.copyProperties(this, pickupcallCancelled);
+		pickupcallCancelled.publishAfterCommit();
+
+	}
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
 
 }

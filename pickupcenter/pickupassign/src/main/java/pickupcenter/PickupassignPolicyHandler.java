@@ -37,7 +37,7 @@ public class PickupassignPolicyHandler{
     
     //private String 호출상태; //호출,호출중,호출확정,호출취소
     @StreamListener(KafkaProcessor.INPUT)
-    public void whenever택시할당요청됨_(@Payload PickupmanageAssigned pickupmanageAssigned){
+    public void wheneverPickupmanageAssigned_(@Payload PickupmanageAssigned pickupmanageAssigned){
     	System.out.println("##### EVT TYPE[택시할당요청됨]  : " + pickupmanageAssigned.getEventType());
         if(pickupmanageAssigned.isMe()){
             System.out.println("##### listener  : " + pickupmanageAssigned.toJson());
@@ -64,7 +64,7 @@ public class PickupassignPolicyHandler{
     }
     
     @StreamListener(KafkaProcessor.INPUT)
-    public void whenever할당확인됨_(@Payload PickupassignCompleted pickupassignCompleted){
+    public void wheneverPickupassignCompleted_(@Payload PickupassignCompleted pickupassignCompleted){
     	System.out.println("##### EVT TYPE[할당확인됨]  : " + pickupassignCompleted.getEventType());
         if(pickupassignCompleted.isMe()){
             System.out.println("##### listener  : " + pickupassignCompleted.toJson());
@@ -85,7 +85,7 @@ public class PickupassignPolicyHandler{
     
     
     @StreamListener(KafkaProcessor.INPUT)
-    public void whenever택시할당취소됨_(@Payload PickupmanageCancelled pickupmanageCancelled){
+    public void wheneverPickupmanageCancelled_(@Payload PickupmanageCancelled pickupmanageCancelled){
     	
         if(pickupmanageCancelled.isMe()){
             System.out.println("##### listener  : " + pickupmanageCancelled.toJson());

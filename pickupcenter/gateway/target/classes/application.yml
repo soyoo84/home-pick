@@ -8,22 +8,18 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: taxicall
+        - id: pickupcall
           uri: http://localhost:8081
           predicates:
-            - Path=/택시호출s/** 
-        - id: taximanage
+            - Path=/pickupcalls/** 
+        - id: pickupmanage
           uri: http://localhost:8082
           predicates:
-            - Path=/택시관리s/** 
-        - id: customer
-          uri: http://localhost:8083
-          predicates:
-            - Path= /customer/**
-        - id: taxiassign
+            - Path=/pickupmanages/** 
+        - id: pickupassign
           uri: http://localhost:8084
           predicates:
-            - Path=/택시할당s/** 
+            - Path=/pickupassigns/** 
       globalcors:
         corsConfigurations:
           '[/**]':
