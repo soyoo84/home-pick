@@ -446,7 +446,7 @@ pickupmanage > deployment.yml 설정
 ![오토2](https://user-images.githubusercontent.com/30484527/110032085-18798a80-7d7b-11eb-9b0a-708959d35c8c.png)
 
 ```
-kubectl autoscale deploy store --min=1 --max=10 --cpu-percent=15 -n skuser14ns
+kubectl autoscale deploy pickmanage --min=1 --max=10 --cpu-percent=15 -n skuser14ns
 ```
 ![오토2](https://user-images.githubusercontent.com/30484527/110033149-5aef9700-7d7c-11eb-9b2b-2f68184e5b05.png)
 
@@ -496,7 +496,7 @@ kubectl set image deploy pickupmanage pickupmanage=skuser14.azurecr.io/pickupman
 ```
 ![re2](https://user-images.githubusercontent.com/30484527/110040487-41534d00-7d86-11eb-8ec1-a2a874cc75fb.png)
 
-- 기존 버전과 새 버전의 store pod 공존 중
+- 기존 버전과 새 버전의 pod 공존 중
 
 ![re3](https://user-images.githubusercontent.com/30484527/110041112-2503e000-7d87-11eb-80af-9b40fdb30a6c.png)
 
