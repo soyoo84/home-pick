@@ -144,7 +144,7 @@
 1) 마이크로 서비스를 넘나드는 시나리오에 대한 트랜잭션 처리 
    택배기사 할당요청이 완료되지 않은 호출요청 완료처리는 최종 할당이 되지 않는 경우 무한정 대기 등 대고객 서비스 및 신뢰도에 치명적 문제점이 있어 ACID 트랜잭션 적용. 
    호출요청 시 택배기사 할당요청에 대해서는 Request-Response 방식 처리 
-2) 호출요청 완료시 할당확인 및 결과 전송: pickup manage service 에서pickup Assign 마이크로서비스로 택시할당 요청이 전달되는 과정에 있어서 
+2) 호출요청 완료시 할당확인 및 결과 전송: pickup manage service 에서pickup Assign 마이크로서비스로 택배할당 요청이 전달되는 과정에 있어서 
   pickup Assig 마이크로 서비스가 별도의 배포주기를 가지기 때문에 Eventual Consistency 방식으로 트랜잭션 처리함. 
 3) 나머지 모든 inter-microservice 트랜잭션: 호출상태, 할당/할당취소 여부 등 이벤트에 대해 카톡을 처리하는 등 데이터 일관성의 시점이 크리티컬하지 않은 모든 경우가 대부분이라 판단, 
 Eventual Consistency 를 기본으로 채택함. 
@@ -260,7 +260,7 @@ http localhost:8081/pickupcalls/ tel="01089385708" location="사당" status="호
 ```
 http delete http://localhost:8081/pickupcalls/1
 ```
-호출이 취소 되면 픽업호출이 하나가 삭제 되었고, 택시관리에서는 해당 호출에 대해서 호출취소로 상태가 변경 됨.
+호출이 취소 되면 픽업호출이 하나가 삭제 되었고, 픽업관리에서는 해당 호출에 대해서 호출취소로 상태가 변경 됨.
 ![화면 캡처 2021-03-05 020638](https://user-images.githubusercontent.com/30484527/110001775-1225e700-7d58-11eb-8497-77d9dc54c23b.jpg)
 
 ```
@@ -269,7 +269,7 @@ http localhost:8081/pickupmanages/
 
 - 고객 메시지 서비스 처리
 고객(customer)는 호출 확정과 할당 확정에 대한 메시지를 다음과 같이 받을 수 있으며,
-할당 된 택시기사의 정보를 또한 확인 할 수 있다.
+할당 된 택배기사의 정보를 또한 확인 할 수 있다.
 파이썬으로 구현 하였음.
 
 
@@ -292,7 +292,7 @@ gateway > applitcation.yml 설정
 gateway 테스트
 
 ```
-http localhost:8080/택시호출s
+http localhost:8080/pickupcall
 -> gateway 를 호출하나 8081 로 호출됨
 ```
 ![gateway_3](https://user-images.githubusercontent.com/30484527/110018454-a5681800-7d6a-11eb-87f2-c318ad5c91ea.png)
@@ -300,7 +300,7 @@ http localhost:8080/택시호출s
 
 ## 동기식 호출 과 Fallback 처리
 
-호출(pickupcall)->택시관리(pickupmanage) 간의 호출은 동기식 일관성을 유지하는 트랜잭션으로 처리함.
+호출(pickupcall)->택배관리(pickupmanage) 간의 호출은 동기식 일관성을 유지하는 트랜잭션으로 처리함.
 호출 프로토콜은 이미 앞서 Rest Repository 에 의해 노출되어있는 REST 서비스를 FeignClient 를 이용하여 호출하도록 한다. 
 
 ![동기1](https://user-images.githubusercontent.com/30484527/110020893-71dabd00-7d6d-11eb-8486-ea439dd311fd.png)
@@ -325,7 +325,7 @@ http localhost:8080/택시호출s
 
 픽업관리 (pickupmanage) 이후 픽업할당(pickupassign) 은 비동기식 처리이므로 , 픽업호출(pickupcall) 의 서비스 호출에는 영향이 없다
  
-고객이 픽업호출(pickupcall) 후 상태가 [호출]->[호출중] 로 변경되고 할당이 완료되면 [픽업확정] 로 변경이 되지만 , 택시 할당(Taxi Assign)이 정상적이지 않으므로 [호출중]로 남아있음. 
+고객이 픽업호출(pickupcall) 후 상태가 [호출]->[호출중] 로 변경되고 할당이 완료되면 [픽업확정] 로 변경이 되지만 , 택배할당(pickupAssign)이 정상적이지 않으므로 [호출중]로 남아있음. 
 --> (시간적 디커플링)
 
 ![비동기1](https://user-images.githubusercontent.com/30484527/110021617-51f7c900-7d6e-11eb-9746-b646d5ed9bcb.png)
