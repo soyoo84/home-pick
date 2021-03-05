@@ -547,3 +547,24 @@ kubectl logs pickupcall-85c7f5f844-vf5lt
 
 ![li3](https://user-images.githubusercontent.com/30484527/110042542-436adb00-7d89-11eb-8891-dc2369bf179a.png)
 
+
+재검증
+1. readiness
+
+
+
+
+
+
+2. Liveness 추가
+ - 서비스 정상 확인
+![1  서비스 정상 확인](https://user-images.githubusercontent.com/30484527/110062115-06fca680-7dac-11eb-9536-d9f35512ccf6.png)
+
+```
+HttpClient --> tcpSocket 방식으로 못찾도록 통신변경
+살리는 재시도 하도록 구현 
+```
+![4  증가 확인](https://user-images.githubusercontent.com/30484527/110062110-049a4c80-7dac-11eb-98ef-5029c59688be.png)
+
+![증가](https://user-images.githubusercontent.com/30484527/110062415-8db18380-7dac-11eb-9a90-f21c6bfbeb12.png)
+
