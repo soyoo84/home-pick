@@ -491,18 +491,22 @@ kubectl apply -f kubernetes/deployment.yml
 ```
 - 새로운 버전의 이미지로 교체
 ```
-az acr build --registry skuser14 --image skuser14.azurecr.io/pickupmanage:v3 .
-kubectl set image deploy pickupmanage pickupmanage=skuser14.azurecr.io/pickupmanage:v3 -n skuser14ns
+az acr build --registry skuser14 --image skuser14.azurecr.io/pickupmanage:v7 . 버젼 7로 만듬
+kubectl set image deploy pickupmanage pickupmanage=skuser14.azurecr.io/pickupmanage:v7 -n skuser14ns -교체
 ```
 ![re2](https://user-images.githubusercontent.com/30484527/110040487-41534d00-7d86-11eb-8ec1-a2a874cc75fb.png)
+
+![교체](https://user-images.githubusercontent.com/30484527/110065253-1b43a200-7db2-11eb-8b3a-e46105d52037.png)
+
+![교체후](https://user-images.githubusercontent.com/30484527/110065259-1da5fc00-7db2-11eb-87ac-0ce3f1358ac4.png)
+
 
 - 기존 버전과 새 버전의 pod 공존 중
 
 ![re3](https://user-images.githubusercontent.com/30484527/110041112-2503e000-7d87-11eb-80af-9b40fdb30a6c.png)
 
-- 부하시 pod 증가
- 
-![re4](https://user-images.githubusercontent.com/30484527/110041488-7ca24b80-7d87-11eb-8b2b-6cb46168be18.png)
+- 부하시 pod 증가 (관련없음X)
+ ![re4](https://user-images.githubusercontent.com/30484527/110041488-7ca24b80-7d87-11eb-8b2b-6cb46168be18.png)
 
 
 ## Config Map
@@ -551,6 +555,7 @@ kubectl logs pickupcall-85c7f5f844-vf5lt
 재검증
 1. readiness
 
+![readiness](https://user-images.githubusercontent.com/30484527/110063942-72944300-7daf-11eb-8888-bc945547875a.png)
 
 
 
