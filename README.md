@@ -138,7 +138,7 @@
 
 ### 비기능 요구사항 검증
 
-![image](https://user-images.githubusercontent.com/78134019/109769773-047c3e80-7c3e-11eb-91fc-45d0a20fdfca.png)
+![image](https://user-images.githubusercontent.com/78134019/110057512-14159780-7da4-11eb-9625-eda63e17ac3d.jpg)
 
 
 1) 마이크로 서비스를 넘나드는 시나리오에 대한 트랜잭션 처리 
