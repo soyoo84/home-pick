@@ -519,8 +519,16 @@ kubectl create configmap delay-conf --from-literal=sleeptime=20
 ```
 
 ![c3](https://user-images.githubusercontent.com/30484527/110047151-b4fa5780-7d90-11eb-9990-3486b0881404.png)
-![c4](https://user-images.githubusercontent.com/30484527/110047157-b6c41b00-7d90-11eb-8e5e-35b9b8a60e82.png)
+
 ![c5](https://user-images.githubusercontent.com/30484527/110047160-b75cb180-7d90-11eb-9ec2-9a6ba219a28a.png)
+
+![c6](https://user-images.githubusercontent.com/30484527/110047408-305c0900-7d91-11eb-9489-b3955c23082d.png)
+
+- configmap 삭제 후 drivercall 서비스 재시작
+![c4](https://user-images.githubusercontent.com/30484527/110047157-b6c41b00-7d90-11eb-8e5e-35b9b8a60e82.png)
+
+![서비스1](https://user-images.githubusercontent.com/30484527/110047297-fb4fb680-7d90-11eb-9712-8755e3469052.png)
+
 
 
 ## Self-healing (Liveness Probe)
