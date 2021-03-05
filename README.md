@@ -108,7 +108,7 @@
 
 ### 기능적 요구사항 검증
 
-![image](https://user-images.githubusercontent.com/78134019/109769654-d860bd80-7c3d-11eb-8d95-e3fdffcef243.png)
+![image](https://user-images.githubusercontent.com/78134019/110057418-e92b4380-7da3-11eb-96c4-6e38d344e907.png)
 
 
 - 고객이 택배기사를 호출요청한다.(ok)
@@ -119,7 +119,7 @@
 
 
 
-![image](https://user-images.githubusercontent.com/78134019/109769704-e9a9ca00-7c3d-11eb-8270-ee2d9b59f02b.png)
+![image](https://user-images.githubusercontent.com/78134019/110057447-efb9bb00-7da3-11eb-8fa7-cf1b2125a725.png)
 
 
 - 고객이 택배기사를 호출취소요청한다.(ok)
@@ -129,7 +129,7 @@
 - 고객에게 카톡 알림을 한다.(ok)
 
 
-![image](https://user-images.githubusercontent.com/78134019/109769741-f7f7e600-7c3d-11eb-94b9-c32f587cd14f.png)
+![image](https://user-images.githubusercontent.com/78134019/110057453-f3e5d880-7da3-11eb-979c-92705dbabf8f.png)
 
 
   
